@@ -1,0 +1,20 @@
+# Artefacts d'outils : jamais versionnés (ils se régénèrent à chaque exécution)
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+
+# Secrets : jamais versionnés
+.env
+.env.*
+*.pem
+*.key

@@ -1,2 +1,0 @@
-[console_scripts]
-secretscan-lite = secretscan_lite.cli:main
