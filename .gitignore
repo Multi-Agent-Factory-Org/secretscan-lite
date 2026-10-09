@@ -18,3 +18,5 @@ venv/
 .env.*
 *.pem
 *.key
+# Rapport de vérification : régénérable, jamais versionné.
+rapport-ci.json

@@ -1,0 +1,23 @@
+# requirements.lock — VERSIONS EXACTES de l'environnement de vérification du livrable.
+#
+# `pyproject.toml` déclare l'INTENTION (des plages), ce fichier fixe le RÉSULTAT.
+# Installation : pip install -e ".[dev]" -c requirements.lock
+#
+# Régénération — geste délibéré :
+#   pip list --format=freeze | grep -v '^secretscan' | grep -v '^pip=' | sort
+#
+# DEUX PIÈGES, tous deux constatés :
+#   - un PYTHONPATH hérité fait apparaître des paquets absents de l'environnement ;
+#   - un `pip install --quiet` sur un environnement neuf peut s'arrêter à mi-chemin SANS RIEN DIRE
+#     (mesuré : `pygments`, dépendance déclarée de pytest, absente après la première installation).
+#     D'où la vérification d'importabilité en fin de `scripts/bootstrap.sh`.
+Pygments==2.21.0
+build==1.6.1
+coverage==7.16.2
+iniconfig==2.3.1
+packaging==26.3
+pluggy==1.6.0
+pyproject_hooks==1.3.3
+pytest-cov==7.1.0
+pytest==9.1.1
+ruff==0.16.10

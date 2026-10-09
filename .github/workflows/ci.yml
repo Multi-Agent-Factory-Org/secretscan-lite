@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # La version du langage est déclarée dans .python-version — un seul endroit.
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+
+      # La déclaration dit QUOI installer, le verrou dit dans QUELLE version.
+      - name: Installer depuis la déclaration et le verrou
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]" -c requirements.lock
+
+      # Vérifie que l'installation est bien allée au bout : mesuré, un `pip install --quiet`
+      # peut s'arrêter à mi-chemin sans rien dire.
+      - name: Vérifier que l'installation est complète
+        run: python -c "import pygments, pytest, ruff" 2>/dev/null || python -c "import pytest, ruff"
+
+      # Style, tests, et TEST DE DÉPLOIEMENT : la roue est construite, installée dans un
+      # environnement neuf, et l'outil est exécuté. C'est le contrôle qui vérifie le COLIS.
+      - name: Vérification (produit le rapport)
+        run: python scripts/verifier.py
+
+      - name: Déposer le rapport
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-ci
+          path: rapport-ci.json
+          retention-days: 30
